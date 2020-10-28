@@ -47,6 +47,7 @@ fi
 # echo "REPO=$REPO"
 # echo "TOKEN=$TOKEN"
 # echo "MESSAGE=$MESSAGE"
+echo "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/requests"
 
 body="{
 \"request\": {
