@@ -17,7 +17,7 @@ override:
 
 defaults: &defaults
   script:
-    - trigger-travis.sh --pro $GITHUB_ID $CYPRESS_PROJECT $TRAVIS_ACCESS_TOKEN
+    - ./trigger-travis.sh --pro $GITHUB_ID $CYPRESS_PROJECT $TRAVIS_ACCESS_TOKEN
 
 jobs:
   include:
