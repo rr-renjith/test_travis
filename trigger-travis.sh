@@ -29,7 +29,7 @@ if [ "$1" = "--branch" ] ; then
   BRANCH="$1"
   shift
 else
-  BRANCH=master
+  BRANCH=main
 fi
 
 USER=$1
@@ -43,9 +43,9 @@ else
     MESSAGE=""
 fi
 ## For debugging:
-echo "USER=$USER"
-echo "REPO=$REPO"
-echo "TOKEN=$TOKEN"
+# echo "USER=$USER"
+# echo "REPO=$REPO"
+# echo "TOKEN=$TOKEN"
 # echo "MESSAGE=$MESSAGE"
 
 body="{
