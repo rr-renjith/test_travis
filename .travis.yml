@@ -1,0 +1,27 @@
+language: node_js
+
+node_js:
+  #Node 10.3+ includes npm@6 which has good "npm ci" command
+  - 10.8
+
+cache:
+  # cache both npm modules and Cypress binary
+  npm: true
+  directories:
+    - ~/.cache
+
+override:
+  - npm ci
+  - npm run cy:verify
+  - npm run cy:info
+
+defaults: &defaults
+  script:
+    - trigger-travis.sh --pro $GITHUB_ID $CYPRESS_PROJECT $TRAVIS_ACCESS_TOKEN
+
+jobs:
+  include:
+    - stage: test
+      env:
+        - STAGE_NAME="Tests on chrome"
+      <<: *defaults
