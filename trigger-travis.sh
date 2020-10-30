@@ -13,6 +13,13 @@ if [ "$#" -lt 3 ] || [ "$#" -gt 7 ]; then
   exit 1
 fi
 
+if [ "$1" = "--pro" ] ; then
+  TRAVIS_URL=travis-ci.com
+  shift
+else
+  TRAVIS_URL=travis-ci.org
+fi
+
 if [ "$1" = "--branch" ] ; then
   BRANCH="$1"
   shift
