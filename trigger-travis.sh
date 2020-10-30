@@ -105,8 +105,8 @@ while ! $BUILD_COMPLETED;
       -H "Accept: application/json" \
       -H "Travis-API-Version: 3" \
       -H "Authorization: token ${TOKEN}" \
-      "https://api.${TRAVIS_URL}/${BUILD_PATH}" \
-      | tee /tmp/travis-build-state-output.$$.txt
+      "https://api.${TRAVIS_URL}${BUILD_PATH}" \
+      > /tmp/travis-build-state-output.$$.txt
     
     if grep -qP '"state":\s*"passed"' /tmp/travis-build-state-output.$$.txt; then
       BUILD_COMPLETED=true
