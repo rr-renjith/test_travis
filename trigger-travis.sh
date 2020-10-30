@@ -86,7 +86,7 @@ while  ! $BUILD_STARTED;
     
     if grep -qP '"state":\s*"started"' /tmp/travis-build-state-output.$$.txt; then
       BUILD_STARTED=true
-      BUILD_PATH=$(grep -Pqo '/build/[0-9]+' /tmp/travis-build-state-output.$$.txt)
+      BUILD_PATH=$(grep -Po '/build/[0-9]+' /tmp/travis-build-state-output.$$.txt)
     fi
     sleep 10s
   done
@@ -94,7 +94,7 @@ while  ! $BUILD_STARTED;
 echo "BUILD_PATH=$BUILD_PATH"
 
 if  ! [[ $BUILD_PATH =~ /build/[0-9]+ ]]; then
-  echo "Trigger sent to run Automation job but the build did not start"
+  echo "Trigger sent to run Automation job but build id was not recorded"
   exit 1
 fi
 
