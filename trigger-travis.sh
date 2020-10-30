@@ -87,7 +87,7 @@ while [ !$BUILD_STARTED ]
     "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/builds?state=started" \
     | tee /tmp/travis-build-state-output.$$.txt
     
-    if grep -q '"state": "started"' /tmp/travis-build-state-output.$$.txt; then
+    if grep -qE '"state":\s*"started"' /tmp/travis-build-state-output.$$.txt; then
       BUILD_STARTED=true
       BUILD_PATH=$(grep -q '/build/[0-9]+')
     fi
