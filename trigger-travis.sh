@@ -76,7 +76,7 @@ BUILD_STARTED = true
 BUILD_COMPLETED = false
 BUILD_PATH = "none"
 
-timeout 1m while [ BUILD_STARTED ]
+while [ BUILD_STARTED ]
 do
   sleep 5s
   BUILD_STARTED = false
