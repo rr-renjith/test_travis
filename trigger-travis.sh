@@ -60,9 +60,18 @@ body="{
 #   "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/requests" \
 #  | tee /tmp/travis-request-output.$$.txt
 
-# poll and wait for the triggered job to complete
+curl \
+  -H "Travis-API-Version: 3" -H "User-Agent: API Explorer" \
+  -H "Authorization: token ${TOKEN}" \
+  "https://api.travis-ci.com/repo/${USER}%2F${REPO}/builds?state=passed" \
+  | tee /tmp/travis-request-output.$$.txt \
+  | jq ".builds"
 
-sleep 5m
+# check if build has started. Include a timeout
+
+# poll and wait for the triggered job to complete. Include a timeout
+
+#sleep 5m
 
 if grep -q '"@type": "error"' /tmp/travis-request-output.$$.txt; then
     exit 1
