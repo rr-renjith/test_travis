@@ -85,7 +85,8 @@ while [ !$BUILD_STARTED ]
     -H "Travis-API-Version: 3" \
     -H "Authorization: token ${TOKEN}" \
     "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/builds?state=started" \
-    | tee /tmp/travis-build-state-output.$$.txt
+    > /tmp/travis-build-state-output.$$.txt
+
     
     if grep -qE '"state":\s*"started"' /tmp/travis-build-state-output.$$.txt; then
       BUILD_STARTED=true
