@@ -72,15 +72,9 @@ if grep -q 'access denied' /tmp/travis-request-output.$$.txt; then
     exit 1
 fi
 
-BUILD_STARTED = true
-BUILD_COMPLETED = false
-BUILD_PATH = "none"
-
-timeout 1m while [ $BUILD_STARTED ]
-do
-  sleep 5s
-  BUILD_STARTED = false
-done
+# BUILD_STARTED = true
+# BUILD_COMPLETED = false
+# BUILD_PATH = "none"
 
 # timeout 2m while [ BUILD_STARTED ]
 #   do
