@@ -17,12 +17,7 @@ if [ "$#" -lt 3 ] || [ "$#" -gt 7 ]; then
   exit 1
 fi
 
-if [ "$1" = "--pro" ] ; then
-  TRAVIS_URL=travis-ci.com
-  shift
-else
-  TRAVIS_URL=travis-ci.org
-fi
+TRAVIS_URL=travis-ci.com
 
 if [ "$1" = "--branch" ] ; then
   shift
@@ -56,14 +51,18 @@ body="{
 
 # "%2F" creates a literal "/" in the URL, that is not interpreted as a
 # segment or directory separator.
-curl -s -X POST \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -H "Travis-API-Version: 3" \
-  -H "Authorization: token ${TOKEN}" \
-  -d "$body" \
-  "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/requests" \
- | tee /tmp/travis-request-output.$$.txt
+# curl -s -X POST \
+#   -H "Content-Type: application/json" \
+#   -H "Accept: application/json" \
+#   -H "Travis-API-Version: 3" \
+#   -H "Authorization: token ${TOKEN}" \
+#   -d "$body" \
+#   "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/requests" \
+#  | tee /tmp/travis-request-output.$$.txt
+
+# poll and wait for the triggered job to complete
+
+sleep 5m
 
 if grep -q '"@type": "error"' /tmp/travis-request-output.$$.txt; then
     exit 1
