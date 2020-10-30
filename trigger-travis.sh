@@ -60,7 +60,7 @@ body="{
 #   "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/requests" \
 #  | tee /tmp/travis-request-output.$$.txt
 
-curl \
+curl -s \
   -H "Travis-API-Version: 3" \
   -H "User-Agent: API Explorer" \
   -H "Authorization: token ${TOKEN}" \
