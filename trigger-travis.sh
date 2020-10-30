@@ -65,7 +65,7 @@ curl \
   -H "User-Agent: API Explorer" \
   -H "Authorization: token ${TOKEN}" \
   "https://api.travis-ci.com/repo/${USER}%2F${REPO}/builds?state=passed" \
-  | tee /tmp/travis-request-output.$$.txt | jq ".builds"
+  | tee /tmp/travis-build-state-output.$$.txt
 
 # check if build has started. Include a timeout
 
