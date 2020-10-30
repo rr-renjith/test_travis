@@ -14,7 +14,6 @@ if [ "$#" -lt 3 ] || [ "$#" -gt 7 ]; then
 fi
 
 if [ "$1" = "--branch" ] ; then
-  shift
   BRANCH="$1"
   shift
 else
