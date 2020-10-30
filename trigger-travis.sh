@@ -76,24 +76,30 @@ BUILD_STARTED = true
 BUILD_COMPLETED = false
 BUILD_PATH = "none"
 
-timeout 2m while [ BUILD_STARTED ]
-  do
-    curl -s \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Travis-API-Version: 3" \
-    -H "Authorization: token ${TOKEN}" \
-    "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/builds?state=started" \
-    | tee /tmp/travis-build-state-output.$$.txt
+timeout 1m while [ BUILD_STARTED ]
+do
+  sleep 5s
+  BUILD_STARTED = false
+done
+
+# timeout 2m while [ BUILD_STARTED ]
+#   do
+#     curl -s \
+#     -H "Content-Type: application/json" \
+#     -H "Accept: application/json" \
+#     -H "Travis-API-Version: 3" \
+#     -H "Authorization: token ${TOKEN}" \
+#     "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/builds?state=started" \
+#     | tee /tmp/travis-build-state-output.$$.txt
     
-    if grep -q '"state":\s*"started"' /tmp/travis-build-state-output.$$.txt; then
-      BUILD_STARTED = true
-      BUILD_PATH = $(grep -q '/build/[0-9]+')
-    fi
-    sleep 10s
-  done
-echo $BUILD_PATH
-if [ !BUILD_STARTED ] then exit 1 fi
+#     if grep -q '"state":\s*"started"' /tmp/travis-build-state-output.$$.txt; then
+#       BUILD_STARTED = true
+#       BUILD_PATH = $(grep -q '/build/[0-9]+')
+#     fi
+#     sleep 10s
+#   done
+# echo $BUILD_PATH
+# if [ !BUILD_STARTED ] then exit 1 fi
 
 # timeout 5m while [ BUILD_STARTED ] && [ !BUILD_COMPLETED ]
 #   do
