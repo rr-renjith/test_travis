@@ -56,26 +56,75 @@ body="{
 
 # "%2F" creates a literal "/" in the URL, that is not interpreted as a
 # segment or directory separator.
-# curl -s -X POST \
-#   -H "Content-Type: application/json" \
-#   -H "Accept: application/json" \
-#   -H "Travis-API-Version: 3" \
-#   -H "Authorization: token ${TOKEN}" \
-#   -d "$body" \
-#   "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/requests" \
-#  | tee /tmp/travis-request-output.$$.txt
-
-curl -s \
+curl -s -X POST \
   -H "Content-Type: application/json" \
   -H "Accept: application/json" \
   -H "Travis-API-Version: 3" \
   -H "Authorization: token ${TOKEN}" \
-  "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/builds?state=started" \
- | tee /tmp/travis-build-state-output.$$.txt
+  -d "$body" \
+  "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/requests" \
+ | tee /tmp/travis-request-output.$$.txt
 
 if grep -q '"@type": "error"' /tmp/travis-request-output.$$.txt; then
     exit 1
 fi
 if grep -q 'access denied' /tmp/travis-request-output.$$.txt; then
     exit 1
+fi
+
+BUILD_STARTED = true
+BUILD_COMPLETED = false
+BUILD_PATH = "none"
+
+timeout 2m while [ BUILD_STARTED ]
+  do
+    curl -s \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Travis-API-Version: 3" \
+    -H "Authorization: token ${TOKEN}" \
+    "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/builds?state=started" \
+    | tee /tmp/travis-build-state-output.$$.txt
+    
+    if grep -q '"state":\s*"started"' /tmp/travis-build-state-output.$$.txt; then
+      BUILD_STARTED = true
+      BUILD_PATH = $(grep -q '/build/[0-9]+')
+    fi
+    sleep 10s
+  done
+
+if [ !BUILD_STARTED ] then exit 1 fi
+
+timeout 5m while [ BUILD_STARTED ] && [ !BUILD_COMPLETED ]
+  do
+    curl -s \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Travis-API-Version: 3" \
+    -H "Authorization: token ${TOKEN}" \
+    "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/builds?state=started" \
+    | tee /tmp/travis-build-state-output.$$.txt
+    
+    if grep -q '"builds":\s*[\s*]' /tmp/travis-build-state-output.$$.txt; then
+      BUILD_COMPLETED = true
+    fi
+    sleep 30s
+  done
+
+if [[ $BUILD_PATH ~= /build/[0-9]+ ]] then 
+  curl -s \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Travis-API-Version: 3" \
+  -H "Authorization: token ${TOKEN}" \
+  "https://api.${TRAVIS_URL}/${BUILD_PATH}" \
+  | tee /tmp/travis-build-state-output.$$.txt
+
+  if grep -q '"state":\s*"passed"' /tmp/travis-build-state-output.$$.txt then
+    exit 0
+  else
+    exit 1
+  fi
+else
+  exit 1
 fi
