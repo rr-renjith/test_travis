@@ -7,21 +7,10 @@
 # For example:
 #   trigger-travis.sh typetools checker-framework `cat ~/private/.travis-access-token` "Trigger for testing"
 
-# For full documentation, see
-# https://github.com/plume-lib/trigger-travis/
-
-
 if [ "$#" -lt 3 ] || [ "$#" -gt 7 ]; then
   echo "Wrong number of arguments $# to trigger-travis.sh; run like:"
-  echo " trigger-travis.sh [--pro] [--branch BRANCH] GITHUBID GITHUBPROJECT TRAVIS_ACCESS_TOKEN [MESSAGE]" >&2
+  echo " trigger-travis.sh [--branch BRANCH] GITHUBID GITHUBPROJECT TRAVIS_ACCESS_TOKEN [MESSAGE]" >&2
   exit 1
-fi
-
-if [ "$1" = "--pro" ] ; then
-  TRAVIS_URL=travis-ci.com
-  shift
-else
-  TRAVIS_URL=travis-ci.org
 fi
 
 if [ "$1" = "--branch" ] ; then
@@ -94,40 +83,26 @@ while  ! $BUILD_STARTED;
     fi
     sleep 10s
   done
+
 echo "BUILD_PATH=$BUILD_PATH"
 
-# if [ !$BUILD_STARTED ] then exit 1 fi
+if  ! [[ $BUILD_PATH =~ /build/[0-9]+ ]]; then
+  echo "Trigger sent to run Automation job but the build did not start"
+  exit 1
+fi
 
-# timeout 5m while [ BUILD_STARTED ] && [ !BUILD_COMPLETED ]
-#   do
-#     curl -s \
-#     -H "Content-Type: application/json" \
-#     -H "Accept: application/json" \
-#     -H "Travis-API-Version: 3" \
-#     -H "Authorization: token ${TOKEN}" \
-#     "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/builds?state=started" \
-#     | tee /tmp/travis-build-state-output.$$.txt
+while ! $BUILD_COMPLETED;
+  do
+    curl -s \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -H "Travis-API-Version: 3" \
+      -H "Authorization: token ${TOKEN}" \
+      "https://api.${TRAVIS_URL}/${BUILD_PATH}" \
+      > /tmp/travis-build-state-output.$$.txt
     
-#     if grep -q '"builds":\s*[\s*]' /tmp/travis-build-state-output.$$.txt; then
-#       BUILD_COMPLETED = true
-#     fi
-#     sleep 30s
-#   done
-
-# if [[ $BUILD_PATH ~= /build/[0-9]+ ]] then 
-#   curl -s \
-#   -H "Content-Type: application/json" \
-#   -H "Accept: application/json" \
-#   -H "Travis-API-Version: 3" \
-#   -H "Authorization: token ${TOKEN}" \
-#   "https://api.${TRAVIS_URL}/${BUILD_PATH}" \
-#   | tee /tmp/travis-build-state-output.$$.txt
-
-#   if grep -q '"state":\s*"passed"' /tmp/travis-build-state-output.$$.txt then
-#     exit 0
-#   else
-#     exit 1
-#   fi
-# else
-#   exit 1
-# fi
+    if grep -q '"state":\s*"passed"' /tmp/travis-build-state-output.$$.txt then
+      BUILD_COMPLETED=true
+    fi
+    sleep 15s
+  done
