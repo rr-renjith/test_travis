@@ -44,10 +44,10 @@ else
 fi
 
 ## For debugging:
-echo "USER=$USER"
-echo "REPO=$REPO"
-echo "TOKEN=$TOKEN"
-echo "MESSAGE=$MESSAGE"
+# echo "USER=$USER"
+# echo "REPO=$REPO"
+# echo "TOKEN=$TOKEN"
+# echo "MESSAGE=$MESSAGE"
 
 body="{
 \"request\": {
@@ -77,7 +77,7 @@ BUILD_STARTED = true
 BUILD_COMPLETED = false
 BUILD_PATH = "none"
 
-timeout 2m while [ $BUILD_STARTED ]
+while [ $BUILD_STARTED ]
   do
     curl -s \
     -H "Content-Type: application/json" \
