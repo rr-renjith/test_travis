@@ -73,9 +73,9 @@ if grep -q 'access denied' /tmp/travis-request-output.$$.txt; then
     exit 1
 fi
 
-BUILD_STARTED = true
-BUILD_COMPLETED = false
-BUILD_PATH = "none"
+BUILD_STARTED=true
+BUILD_COMPLETED=false
+BUILD_PATH="none"
 
 while [ $BUILD_STARTED ]
   do
@@ -88,13 +88,13 @@ while [ $BUILD_STARTED ]
     | tee /tmp/travis-build-state-output.$$.txt
     
     if grep -q '"state":\s*"started"' /tmp/travis-build-state-output.$$.txt; then
-      BUILD_STARTED = true
-      BUILD_PATH = $(grep -q '/build/[0-9]+')
+      BUILD_STARTED=true
+      BUILD_PATH=$(grep -q '/build/[0-9]+')
     fi
     sleep 10s
   done
 echo $BUILD_PATH
-if [ !$BUILD_STARTED ] then exit 1 fi
+# if [ !$BUILD_STARTED ] then exit 1 fi
 
 # timeout 5m while [ BUILD_STARTED ] && [ !BUILD_COMPLETED ]
 #   do
