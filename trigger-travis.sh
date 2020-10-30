@@ -90,7 +90,7 @@ while  ! $BUILD_STARTED;
     
     if grep -qP '"state":\s*"started"' /tmp/travis-build-state-output.$$.txt; then
       BUILD_STARTED=true
-      BUILD_PATH=$grep -Po '/build/[0-9]+' /tmp/travis-build-state-output.$$.txt)
+      BUILD_PATH=$(grep -Po '/build/[0-9]+' /tmp/travis-build-state-output.$$.txt)
     fi
     sleep 10s
   done
