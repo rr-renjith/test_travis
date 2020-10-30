@@ -73,11 +73,11 @@ if grep -q 'access denied' /tmp/travis-request-output.$$.txt; then
     exit 1
 fi
 
-BUILD_STARTED=true
+BUILD_STARTED=false
 BUILD_COMPLETED=false
 BUILD_PATH="none"
 
-while [ $BUILD_STARTED ]
+while [ !$BUILD_STARTED ]
   do
     curl -s \
     -H "Content-Type: application/json" \
@@ -93,7 +93,8 @@ while [ $BUILD_STARTED ]
     fi
     sleep 10s
   done
-echo $BUILD_PATH
+echo "BUILD_PATH=$BUILD_PATH"
+
 # if [ !$BUILD_STARTED ] then exit 1 fi
 
 # timeout 5m while [ BUILD_STARTED ] && [ !BUILD_COMPLETED ]
