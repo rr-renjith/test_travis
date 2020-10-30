@@ -77,7 +77,7 @@ BUILD_STARTED = true
 BUILD_COMPLETED = false
 BUILD_PATH = "none"
 
-timeout 2m while [ BUILD_STARTED ]
+timeout 2m while [ $BUILD_STARTED ]
   do
     curl -s \
     -H "Content-Type: application/json" \
@@ -94,7 +94,7 @@ timeout 2m while [ BUILD_STARTED ]
     sleep 10s
   done
 echo $BUILD_PATH
-if [ !BUILD_STARTED ] then exit 1 fi
+if [ !$BUILD_STARTED ] then exit 1 fi
 
 # timeout 5m while [ BUILD_STARTED ] && [ !BUILD_COMPLETED ]
 #   do
