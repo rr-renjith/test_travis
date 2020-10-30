@@ -64,7 +64,7 @@ curl -s -X POST \
   -H "Authorization: token ${TOKEN}" \
   -d "$body" \
   "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/requests" \
- | tee /tmp/travis-request-output.$$.txt
+  > /tmp/travis-request-output.$$.txt
 
 if grep -q '"@type": "error"' /tmp/travis-request-output.$$.txt; then
     exit 1
@@ -77,7 +77,7 @@ BUILD_STARTED=false
 BUILD_COMPLETED=false
 BUILD_PATH="none"
 
-while [ !$BUILD_STARTED ]
+while  ! $BUILD_STARTED;
   do
     curl -s \
     -H "Content-Type: application/json" \
@@ -88,9 +88,9 @@ while [ !$BUILD_STARTED ]
     > /tmp/travis-build-state-output.$$.txt
 
     
-    if grep -qE '"state":\s*"started"' /tmp/travis-build-state-output.$$.txt; then
+    if grep -qP '"state":\s*"started"' /tmp/travis-build-state-output.$$.txt; then
       BUILD_STARTED=true
-      BUILD_PATH=$(grep -q '/build/[0-9]+')
+      BUILD_PATH=$grep -Po '/build/[0-9]+' /tmp/travis-build-state-output.$$.txt)
     fi
     sleep 10s
   done
