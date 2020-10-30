@@ -61,11 +61,11 @@ body="{
 #  | tee /tmp/travis-request-output.$$.txt
 
 curl \
-  -H "Travis-API-Version: 3" -H "User-Agent: API Explorer" \
+  -H "Travis-API-Version: 3" \
+  -H "User-Agent: API Explorer" \
   -H "Authorization: token ${TOKEN}" \
   "https://api.travis-ci.com/repo/${USER}%2F${REPO}/builds?state=passed" \
-  | tee /tmp/travis-request-output.$$.txt \
-  | jq ".builds"
+  | tee /tmp/travis-request-output.$$.txt | jq ".builds"
 
 # check if build has started. Include a timeout
 
