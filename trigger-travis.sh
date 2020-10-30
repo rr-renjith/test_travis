@@ -67,9 +67,11 @@ curl -s -X POST \
  | tee /tmp/travis-request-output.$$.txt
 
 if grep -q '"@type": "error"' /tmp/travis-request-output.$$.txt; then
+    echo "API failed"
     exit 1
 fi
 if grep -q 'access denied' /tmp/travis-request-output.$$.txt; then
+    echo "not enough permissions"
     exit 1
 fi
 
