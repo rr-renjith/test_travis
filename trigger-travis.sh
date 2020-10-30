@@ -93,7 +93,7 @@ while  ! $BUILD_STARTED;
 
 echo "BUILD_PATH=$BUILD_PATH"
 
-if  ! [ $BUILD_PATH =~ /build/[0-9]+ ]; then
+if  ! [[ $BUILD_PATH =~ /build/[0-9]+ ]]; then
   echo "Trigger sent to run Automation job but the build did not start"
   exit 1
 fi
