@@ -108,7 +108,7 @@ while ! $BUILD_COMPLETED;
       "https://api.${TRAVIS_URL}/${BUILD_PATH}" \
       > /tmp/travis-build-state-output.$$.txt
     
-    if grep -q '"state":\s*"passed"' /tmp/travis-build-state-output.$$.txt then
+    if grep -q '"state":\s*"passed"' /tmp/travis-build-state-output.$$.txt; then
       BUILD_COMPLETED=true
     fi
     sleep 15s
