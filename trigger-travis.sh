@@ -117,6 +117,6 @@ while ! $BUILD_COMPLETED;
   done
 
   if grep -qP '"state":\s*"failed"' /tmp/travis-build-state-output.$$.txt; then
-      echo "Cypress tests failed. Check the downstream build logs/ Cypress Dashboard for test details"
+      echo "Cypress tests failed. Check the downstream build logs/ Cypress Dashboard for test details."
       exit 1
   fi
