@@ -1,4 +1,4 @@
-#!/bin/sh -f
+#!/bin/bash
 
 # Trigger a new Travis-CI job.
 
@@ -53,6 +53,8 @@ body="{
 
 # "%2F" creates a literal "/" in the URL, that is not interpreted as a
 # segment or directory separator.
+# creates a build request
+
 curl -s -X POST \
   -H "Content-Type: application/json" \
   -H "Accept: application/json" \
@@ -113,3 +115,8 @@ while ! $BUILD_COMPLETED;
     fi
     sleep 15s
   done
+
+  if grep -qP '"state":\s*"failed"' /tmp/travis-build-state-output.$$.txt; then
+      echo "Cypress tests failed. Check the downstream build logs/ Cypress Dashboard for test details"
+      exit 1
+  fi
