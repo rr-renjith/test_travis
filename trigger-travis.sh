@@ -53,7 +53,7 @@ body="{
 
 # "%2F" creates a literal "/" in the URL, that is not interpreted as a
 # segment or directory separator.
-# creates a build request
+# creates a build request for cypress tests
 
 curl -s -X POST \
   -H "Content-Type: application/json" \
