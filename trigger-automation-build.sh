@@ -75,8 +75,16 @@ BUILD_STARTED=false
 BUILD_COMPLETED=false
 BUILD_PATH="none"
 
-while  ! $BUILD_STARTED;
+BUILD_START_TIMEOUT=$((SECONDS+120))
+BUILD_EXECUTION_TIMEOUT=$((SECONDS+3600))
+
+while ! $BUILD_STARTED;
   do
+    if [ $SECONDS -gt $BUILD_START_TIMEOUT ]; then
+      echo "Timed out waiting for a response 'started' from automation build"
+      exit 1
+    fi
+
     curl -s \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
@@ -93,8 +101,6 @@ while  ! $BUILD_STARTED;
     sleep 10s
   done
 
-echo "BUILD_PATH=$BUILD_PATH"
-
 if  ! [[ $BUILD_PATH =~ /build/[0-9]+ ]]; then
   echo "Trigger sent to run Automation job but build id was not recorded"
   exit 1
@@ -102,6 +108,11 @@ fi
 
 while ! $BUILD_COMPLETED;
   do
+    if [ $SECONDS -gt $BUILD_EXECUTION_TIMEOUT ]; then
+      echo "Automation build is taking longer than expected. Exiting the current build"
+      exit 1
+    fi
+
     curl -s \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
