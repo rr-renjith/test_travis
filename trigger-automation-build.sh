@@ -81,7 +81,7 @@ BUILD_EXECUTION_TIMEOUT=$((SECONDS+3600))
 while ! $BUILD_STARTED;
   do
     if [ $SECONDS -gt $BUILD_START_TIMEOUT ]; then
-      echo "Timed out waiting for a response 'started' from automation build"
+      echo "Timed out waiting for a response 'started' from automation build."
       exit 1
     fi
 
