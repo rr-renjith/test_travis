@@ -18,7 +18,7 @@ override:
 defaults: &defaults
   script:
     - echo $TRAVIS_COMMIT
-    - export MESSAGE=$(git log -n 1 --pretty=%B $TRAVIS_COMMIT | cut -d " " -f 2 | git log -n 1 --pretty=%B)
+    - export MESSAGE=$(git log -n 1 --pretty=%B | cut -d " " -f 2 | git log -n 1 --pretty=%B)
     - echo $MESSAGE
     - bash ./trigger-automation-build.sh --pro $GITHUB_ID $CYPRESS_PROJECT $TRAVIS_ACCESS_TOKEN $MESSAGE
 
