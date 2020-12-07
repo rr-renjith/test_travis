@@ -17,7 +17,7 @@ override:
 
 defaults: &defaults
   script:
-    - bash ./trigger-automation-build.sh --pro $GITHUB_ID $CYPRESS_PROJECT $TRAVIS_ACCESS_TOKEN $TRAVIS_COMMIT
+    - bash ./trigger-automation-build.sh --pro $GITHUB_ID $CYPRESS_PROJECT $TRAVIS_ACCESS_TOKEN $TRAVIS_COMMIT_MESSAGE
 
 jobs:
   include:
