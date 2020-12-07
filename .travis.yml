@@ -20,6 +20,7 @@ defaults: &defaults
     - echo $TRAVIS_COMMIT
     - export MESSAGE=`git log -n 1 --pretty=%B $TRAVIS_COMMIT`
     - echo $MESSAGE
+    - echo `cut -d " " -f 2 | git log -n 1 --pretty=%B`
     - bash ./trigger-automation-build.sh --pro $GITHUB_ID $CYPRESS_PROJECT $TRAVIS_ACCESS_TOKEN $MESSAGE
 
 jobs:
