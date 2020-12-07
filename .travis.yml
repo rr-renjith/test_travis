@@ -25,3 +25,4 @@ jobs:
       env:
         - STAGE_NAME="Tests on chrome"
       <<: *defaults
+        if: type = api
