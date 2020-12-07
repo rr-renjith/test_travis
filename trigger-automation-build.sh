@@ -48,7 +48,7 @@ fi
 body="{
 \"request\": {
   \"branch\":\"$BRANCH\"
-  \"message\":$MESSAGE
+  $MESSAGE
 }}"
 
 # "%2F" creates a literal "/" in the URL, that is not interpreted as a
