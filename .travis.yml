@@ -17,7 +17,7 @@ override:
 
 defaults: &defaults
   script:
-    - export MESSAGE=git log --format=%B -n 1 $TRAVIS_COMMIT
+    - export MESSAGE=`git log --format=%B -n 1 $TRAVIS_COMMIT`
     - bash ./trigger-automation-build.sh --pro $GITHUB_ID $CYPRESS_PROJECT $TRAVIS_ACCESS_TOKEN $MESSAGE
 
 jobs:
