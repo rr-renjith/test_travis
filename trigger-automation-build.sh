@@ -93,6 +93,7 @@ while ! $BUILD_STARTED;
     "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/builds?state=started" \
     > /tmp/travis-build-state-output.$$.txt
 
+    cat /tmp/travis-build-state-output.$$.txt
     
     if grep -qP '"state":\s*"started"' /tmp/travis-build-state-output.$$.txt; then
       BUILD_STARTED=true
