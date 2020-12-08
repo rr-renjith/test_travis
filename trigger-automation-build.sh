@@ -40,10 +40,10 @@ else
 fi
 
 ## For debugging:
-# echo "USER=$USER"
-# echo "REPO=$REPO"
-# echo "TOKEN=$TOKEN"
-# echo "MESSAGE=$MESSAGE"
+echo "USER=$USER"
+echo "REPO=$REPO"
+echo "TOKEN=$TOKEN"
+echo "MESSAGE=$MESSAGE"
 
 body="{
 \"request\": {
