@@ -40,10 +40,10 @@ else
 fi
 
 ## For debugging:
-echo "USER=$USER"
-echo "REPO=$REPO"
-echo "TOKEN=$TOKEN"
-echo "MESSAGE=$MESSAGE"
+# echo "USER=$USER"
+# echo "REPO=$REPO"
+# echo "TOKEN=$TOKEN"
+# echo "MESSAGE=$MESSAGE"
 
 body="{
 \"request\": {
@@ -92,8 +92,6 @@ while ! $BUILD_STARTED;
     -H "Authorization: token ${TOKEN}" \
     "https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/builds?state=started" \
     > /tmp/travis-build-state-output.$$.txt
-
-    cat /tmp/travis-build-state-output.$$.txt
     
     if grep -qP '"state":\s*"started"' /tmp/travis-build-state-output.$$.txt; then
       BUILD_STARTED=true
